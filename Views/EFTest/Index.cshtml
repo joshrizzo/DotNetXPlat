@@ -1,0 +1,8 @@
+@model List<Product>
+
+@foreach(var product in Model) {
+    @Html.ActionLink(product.Name, "Product", new { productId = product.Id }) 
+    <br />
+}
+
+@Html.ActionLink("New Item", "Product")

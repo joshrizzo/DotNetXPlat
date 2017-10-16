@@ -1,0 +1,8 @@
+@model Product
+
+
+<form method="post">
+    @Html.EditorForModel()
+    @Html.ValidationSummary()
+    <button type="submit">Save</button>
+</form>
