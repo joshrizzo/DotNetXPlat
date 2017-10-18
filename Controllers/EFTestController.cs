@@ -1,10 +1,12 @@
 using System;
 using System.Linq;
 using DotNetXPlat.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetXPlat.Controllers
 {
+    [Authorize]
     public class EFTestController: Controller
     {
         private readonly MyDB context;
