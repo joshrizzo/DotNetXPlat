@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DotNetXPlat.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,12 @@ namespace DotNetXPlat
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MyDB>(opt => opt.UseInMemoryDatabase("MyDB"));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddEntityFrameworkStores<MyDB>();
+
+            services.AddAuthentication();
+
             services.AddMvc();
         }
 
@@ -41,12 +48,9 @@ namespace DotNetXPlat
 
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseAuthentication();
+
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
