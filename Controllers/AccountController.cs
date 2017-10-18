@@ -45,7 +45,7 @@ namespace DotNetXPlat.Controllers
             }
 
             _logger.LogInformation(1, "User logged in.");
-            return Redirect(model.ReturnUrl);
+            return Redirect(model.ReturnUrl ?? "/");
         }
 
         [HttpPost]
@@ -88,7 +88,7 @@ namespace DotNetXPlat.Controllers
 
             await _signInManager.SignInAsync(user, isPersistent: false);
             _logger.LogInformation(3, "User created a new account with password.");
-            return Redirect(returnUrl);
+            return Redirect(returnUrl ?? "/");
         }
     }
 }
