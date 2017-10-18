@@ -1,0 +1,9 @@
+@model LoginViewModel
+
+<form method="post">
+    @Html.EditorForModel()
+    @Html.ValidationSummary()
+    <button type="submit">Login</button>
+</form>
+
+@Html.ActionLink("Create a new user", "Register", new { returnUrl = Model.ReturnUrl })

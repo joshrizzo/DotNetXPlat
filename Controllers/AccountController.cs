@@ -26,6 +26,39 @@ namespace DotNetXPlat.Controllers
         }
 
         [HttpGet]
+        public ActionResult Login(string returnUrl = null)
+        {
+            var model = new LoginViewModel { ReturnUrl = returnUrl };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("LoginError", "Invalid login attempt.");
+                return View(model);
+            }
+
+            _logger.LogInformation(1, "User logged in.");
+            return Redirect(model.ReturnUrl);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation(2, "User logged out.");
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
         public IActionResult Register(string returnUrl = null)
         {
             var model = new RegisterViewModel { ReturnUrl = returnUrl };
