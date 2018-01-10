@@ -32,6 +32,11 @@ namespace DotNetXPlat
             services.AddAuthentication();
 
             services.AddMvc();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("EditProduct", policy => policy.RequireClaim(Claims.Product.Edit));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

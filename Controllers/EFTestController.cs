@@ -28,6 +28,7 @@ namespace DotNetXPlat.Controllers
             return View(existingProduct);
         }
 
+        [Authorize(Policy = "EditProduct")]
         [HttpPost]
         public IActionResult Product(Product product) {
             var existingProduct = getProductById(product.Id);
