@@ -21,6 +21,7 @@ namespace DotNetXPlat.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpGet]
         public IActionResult Product(Guid productId) {
             var existingProduct = getProductById(productId);

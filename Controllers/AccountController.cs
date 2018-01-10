@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Security.Claims;
 
 namespace DotNetXPlat.Controllers
 {
@@ -13,15 +15,18 @@ namespace DotNetXPlat.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger _logger;
 
         public AccountController(
             UserManager<ApplicationUser> _userManager,
             SignInManager<ApplicationUser> _signInManager,
+            RoleManager<IdentityRole> _roleManager,
             ILoggerFactory loggerFactory)
         {
             this._userManager = _userManager;
             this._signInManager = _signInManager;
+            this._roleManager = _roleManager;
             this._logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -80,15 +85,38 @@ namespace DotNetXPlat.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
             {
-                foreach (var error in result.Errors) { 
+                foreach (var error in result.Errors)
+                {
                     ModelState.AddModelError(error.Code, error.Description);
                 }
                 return View(model);
             }
 
+            addPermissions(user);
+
             await _signInManager.SignInAsync(user, isPersistent: false);
             _logger.LogInformation(3, "User created a new account with password.");
             return Redirect(returnUrl ?? "/");
+        }
+
+        private async void addPermissions(ApplicationUser user)
+        {
+            if (!await _roleManager.RoleExistsAsync(Roles.Admin))
+            {
+                var adminRole = new IdentityRole(Roles.Admin);
+                await _roleManager.CreateAsync(adminRole);
+
+                var claimTasks = new Task[] {
+                        _roleManager.AddClaimAsync(adminRole, new Claim(Claims.Product.View, "")),
+                        _roleManager.AddClaimAsync(adminRole, new Claim(Claims.Product.Edit, ""))
+                    };
+                Task.WaitAll(claimTasks);
+            }
+
+            if (!await _userManager.IsInRoleAsync(user, Roles.Admin))
+            {
+                await _userManager.AddToRoleAsync(user, Roles.Admin);
+            }
         }
     }
 }
