@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Security.Claims;
+using Omu.ValueInjecter;
 
 namespace DotNetXPlat.Controllers
 {
@@ -74,13 +75,9 @@ namespace DotNetXPlat.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
-            var user = new ApplicationUser
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                UserName = model.Email
-            };
+            var user = new ApplicationUser();
+            user.InjectFrom(model);
+            user.UserName = user.Email;
 
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
