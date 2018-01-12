@@ -98,18 +98,6 @@ namespace DotNetXPlat.Controllers
 
         private async void addPermissions(ApplicationUser user)
         {
-            if (!await _roleManager.RoleExistsAsync(Roles.Admin))
-            {
-                var adminRole = new IdentityRole(Roles.Admin);
-                await _roleManager.CreateAsync(adminRole);
-
-                var claimTasks = new Task[] {
-                        _roleManager.AddClaimAsync(adminRole, new Claim(Claims.Product.View, "")),
-                        _roleManager.AddClaimAsync(adminRole, new Claim(Claims.Product.Edit, ""))
-                    };
-                Task.WaitAll(claimTasks);
-            }
-
             if (!await _userManager.IsInRoleAsync(user, Roles.Admin))
             {
                 await _userManager.AddToRoleAsync(user, Roles.Admin);

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DotNetXPlat.Models;
+﻿using DotNetXPlat.Models;
+using DotNetXPlat.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -27,7 +24,7 @@ namespace DotNetXPlat
             services.AddDbContext<MyDB>(opt => opt.UseInMemoryDatabase("MyDB"));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                    .AddEntityFrameworkStores<MyDB>();
+                .AddEntityFrameworkStores<MyDB>();
 
             services.AddAuthentication();
 
@@ -37,14 +34,18 @@ namespace DotNetXPlat
             {
                 options.AddPolicy("EditProduct", policy => policy.RequireClaim(Claims.Product.Edit));
             });
+
+            services.AddTransient<IDataSeeder, DataSeeder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDataSeeder dataSeeder)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                dataSeeder.SeedDB();
             }
             else
             {
