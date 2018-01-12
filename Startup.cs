@@ -11,8 +11,11 @@ namespace DotNetXPlat
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IHostingEnvironment env;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
+            this.env = env;
             Configuration = configuration;
         }
 
@@ -21,7 +24,11 @@ namespace DotNetXPlat
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MyDB>(opt => opt.UseInMemoryDatabase("MyDB"));
+            if (env.IsDevelopment()) {
+                services.AddDbContext<MyDB>(opt => opt.UseInMemoryDatabase("MyDB"));
+            } else {
+                services.AddDbContext<MyDB>(opt => opt.UseSqlServer(Configuration["ConnectionStrings:MyDB"]));
+            }
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<MyDB>();
@@ -39,7 +46,7 @@ namespace DotNetXPlat
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDataSeeder dataSeeder)
+        public void Configure(IApplicationBuilder app, IDataSeeder dataSeeder)
         {
             if (env.IsDevelopment())
             {
