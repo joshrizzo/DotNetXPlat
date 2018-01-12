@@ -1,4 +1,4 @@
-namespace DotNetXPlat.Models
+namespace DotNetXPlat.Business.Models
 {
     public static class Claims
     {

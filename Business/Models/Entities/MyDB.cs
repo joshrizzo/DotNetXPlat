@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace DotNetXPlat.Models
+namespace DotNetXPlat.Business.Models
 {
     public class MyDB : IdentityDbContext
     {

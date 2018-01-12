@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using DotNetXPlat.Models;
+using DotNetXPlat.Business.Models;
 
-namespace DotNetXPlat.Controllers
+namespace DotNetXPlat.Web.Controllers
 {
     public class HomeController : Controller
     {

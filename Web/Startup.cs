@@ -1,5 +1,5 @@
-﻿using DotNetXPlat.Models;
-using DotNetXPlat.Services;
+﻿using DotNetXPlat.Business.Models;
+using DotNetXPlat.Business.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DotNetXPlat
+namespace DotNetXPlat.Web
 {
     public class Startup
     {

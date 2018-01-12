@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using DotNetXPlat.Models;
+using DotNetXPlat.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Omu.ValueInjecter;
 
-namespace DotNetXPlat.Controllers
+namespace DotNetXPlat.Web.Controllers
 {
     [Authorize]
     public class EFTestController: Controller

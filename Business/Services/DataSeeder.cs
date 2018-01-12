@@ -1,9 +1,9 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
-using DotNetXPlat.Models;
+using DotNetXPlat.Business.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace DotNetXPlat.Services
+namespace DotNetXPlat.Business.Services
 {
     public interface IDataSeeder
     {

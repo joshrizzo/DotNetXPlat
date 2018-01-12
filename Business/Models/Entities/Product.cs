@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DotNetXPlat.Models
+namespace DotNetXPlat.Business.Models
 {
     public class Product
     {

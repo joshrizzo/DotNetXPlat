@@ -1,12 +1,12 @@
 using System.Threading.Tasks;
-using DotNetXPlat.Models;
+using DotNetXPlat.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Omu.ValueInjecter;
 
-namespace DotNetXPlat.Controllers
+namespace DotNetXPlat.Web.Controllers
 {
     public class AccountController : Controller
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace DotNetXPlat
+namespace DotNetXPlat.Web
 {
     public class Program
     {
