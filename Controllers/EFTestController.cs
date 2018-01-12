@@ -3,6 +3,7 @@ using System.Linq;
 using DotNetXPlat.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Omu.ValueInjecter;
 
 namespace DotNetXPlat.Controllers
 {
@@ -36,8 +37,7 @@ namespace DotNetXPlat.Controllers
             if (existingProduct == default(Product)) {
                 context.Products.Add(product);
             } else {
-                existingProduct.Name = product.Name;
-                existingProduct.Description = product.Description;
+                existingProduct.InjectFrom(product);
             }
 
             context.SaveChanges();

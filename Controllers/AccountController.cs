@@ -1,34 +1,30 @@
 using System.Threading.Tasks;
-using System.Linq;
-using System.Collections;
 using DotNetXPlat.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Security.Claims;
 using Omu.ValueInjecter;
 
 namespace DotNetXPlat.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly ILogger _logger;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly ILogger logger;
 
         public AccountController(
-            UserManager<ApplicationUser> _userManager,
-            SignInManager<ApplicationUser> _signInManager,
-            RoleManager<IdentityRole> _roleManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
             ILoggerFactory loggerFactory)
         {
-            this._userManager = _userManager;
-            this._signInManager = _signInManager;
-            this._roleManager = _roleManager;
-            this._logger = loggerFactory.CreateLogger<AccountController>();
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.roleManager = roleManager;
+            this.logger = loggerFactory.CreateLogger<AccountController>();
         }
 
         [HttpGet]
@@ -42,7 +38,7 @@ namespace DotNetXPlat.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+            var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
 
             if (!result.Succeeded)
             {
@@ -50,7 +46,7 @@ namespace DotNetXPlat.Controllers
                 return View(model);
             }
 
-            _logger.LogInformation(1, "User logged in.");
+            logger.LogInformation(1, "User logged in.");
             return Redirect(model.ReturnUrl ?? "/");
         }
 
@@ -59,8 +55,8 @@ namespace DotNetXPlat.Controllers
         [Authorize]
         public async Task<IActionResult> LogOff()
         {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation(2, "User logged out.");
+            await signInManager.SignOutAsync();
+            logger.LogInformation(2, "User logged out.");
             return RedirectToAction("Index", "Home");
         }
 
@@ -79,7 +75,7 @@ namespace DotNetXPlat.Controllers
             user.InjectFrom(model);
             user.UserName = user.Email;
 
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -91,16 +87,16 @@ namespace DotNetXPlat.Controllers
 
             addPermissions(user);
 
-            await _signInManager.SignInAsync(user, isPersistent: false);
-            _logger.LogInformation(3, "User created a new account with password.");
+            await signInManager.SignInAsync(user, isPersistent: false);
+            logger.LogInformation(3, "User created a new account with password.");
             return Redirect(returnUrl ?? "/");
         }
 
         private async void addPermissions(ApplicationUser user)
         {
-            if (!await _userManager.IsInRoleAsync(user, Roles.Admin))
+            if (!await userManager.IsInRoleAsync(user, Roles.Admin))
             {
-                await _userManager.AddToRoleAsync(user, Roles.Admin);
+                await userManager.AddToRoleAsync(user, Roles.Admin);
             }
         }
     }

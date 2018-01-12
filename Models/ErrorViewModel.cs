@@ -1,5 +1,3 @@
-using System;
-
 namespace DotNetXPlat.Models
 {
     public class ErrorViewModel
