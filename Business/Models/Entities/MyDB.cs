@@ -5,11 +5,7 @@ namespace DotNetXPlat.Business.Models
 {
     public class MyDB : IdentityDbContext
     {
-        public MyDB(DbContextOptions<MyDB> options) : base(options)
-        {
-        }
-
-        public DbSet<Product> Products { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     }
