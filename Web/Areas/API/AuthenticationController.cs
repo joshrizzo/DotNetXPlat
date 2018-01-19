@@ -10,7 +10,7 @@ using Omu.ValueInjecter;
 
 namespace Web.Areas.API
 {
-    [Route("api/auth/[action]")]
+    [Area("API")]
     public class AuthenticationController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;

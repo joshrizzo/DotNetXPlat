@@ -25,19 +25,22 @@ namespace DotNetXPlat.Web
             Configuration = configuration;
         }
 
-        public Startup(IConfiguration configuration) 
+        public Startup(IConfiguration configuration)
         {
             this.Configuration = configuration;
-               
+
         }
-                public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            if (env.IsDevelopment()) {
+            if (env.IsDevelopment())
+            {
                 services.AddDbContext<MyDB>(opt => opt.UseInMemoryDatabase("MyDB"));
-            } else {
+            }
+            else
+            {
                 services.AddDbContext<MyDB>(opt => opt.UseSqlServer(Configuration["ConnectionStrings:MyDB"]));
             }
 
@@ -52,7 +55,7 @@ namespace DotNetXPlat.Web
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    
+
                 })
                 .AddJwtBearer(config =>
                 {
@@ -96,7 +99,12 @@ namespace DotNetXPlat.Web
 
             app.UseAuthentication();
 
-            app.UseMvcWithDefaultRoute();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("areaRoute", "{area:exists}/{controller=Authentication}/{action=SignIn}/{id?}");
+
+                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }
