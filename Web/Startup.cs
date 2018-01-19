@@ -1,11 +1,17 @@
-﻿using DotNetXPlat.Business.Models;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Business.Services;
+using DotNetXPlat.Business.Models;
 using DotNetXPlat.Business.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DotNetXPlat.Web
 {
@@ -19,7 +25,12 @@ namespace DotNetXPlat.Web
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration) 
+        {
+            this.Configuration = configuration;
+               
+        }
+                public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -31,9 +42,30 @@ namespace DotNetXPlat.Web
             }
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<MyDB>();
+                .AddEntityFrameworkStores<MyDB>()
+                .AddDefaultTokenProviders();
 
-            services.AddAuthentication();
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    
+                })
+                .AddJwtBearer(config =>
+                {
+                    config.RequireHttpsMetadata = false;
+                    config.SaveToken = true;
+                    config.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                        ClockSkew = TimeSpan.Zero // remove delay of token when expire
+                    };
+                });
 
             services.AddMvc();
 
@@ -43,6 +75,7 @@ namespace DotNetXPlat.Web
             });
 
             services.AddTransient<IDataSeeder, DataSeeder>();
+            services.AddTransient<IJwtFactory, JwtFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
