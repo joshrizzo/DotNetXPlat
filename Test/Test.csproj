@@ -11,6 +11,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Web\Web.csproj" />
-    <ProjectReference Include="..\Business\Business.csproj" />
   </ItemGroup>
 </Project>

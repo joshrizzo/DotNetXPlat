@@ -1,4 +1,4 @@
-namespace DotNetXPlat.Business.Models
+namespace DotNetXPlat.Web.Models
 {
     public class ErrorViewModel
     {

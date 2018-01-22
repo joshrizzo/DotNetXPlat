@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Services;
-using DotNetXPlat.Business.Models;
+using DotNetXPlat.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
-using DotNetXPlat.Business.Models;
+using DotNetXPlat.Shared.Models;
+using DotNetXPlat.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Omu.ValueInjecter;

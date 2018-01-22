@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DotNetXPlat.Business.Models
+namespace DotNetXPlat.Web.Models
 {
     public class LoginViewModel
     {

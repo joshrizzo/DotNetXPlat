@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using DotNetXPlat.Business.Models;
+using DotNetXPlat.Shared.Models;
+using DotNetXPlat.Web.Models;
 
 namespace DotNetXPlat.Web.Controllers
 {

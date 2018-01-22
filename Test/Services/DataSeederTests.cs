@@ -1,12 +1,11 @@
 using System.Security.Claims;
-using System.Threading.Tasks;
-using DotNetXPlat.Business.Services;
-using DotNetXPlat.Business.Models;
+using DotNetXPlat.Shared.Services;
+using DotNetXPlat.Shared.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using DotNetXPlat.Web.Models;
 
 namespace DotNetXPlat.Test
 {

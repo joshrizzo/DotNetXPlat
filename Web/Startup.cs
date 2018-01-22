@@ -2,8 +2,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Business.Services;
-using DotNetXPlat.Business.Models;
-using DotNetXPlat.Business.Services;
+using DotNetXPlat.Shared.Models;
+using DotNetXPlat.Shared.Services;
+using DotNetXPlat.Web.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
